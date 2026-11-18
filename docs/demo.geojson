@@ -1,0 +1,108 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "kind": "waypoint",
+        "name": "Great Pyramid of Giza"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.1342,
+          29.9792
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "kind": "waypoint",
+        "name": "Cairo Tower"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.2243,
+          30.0459
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "kind": "waypoint",
+        "name": "Tahrir Square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.2336,
+          30.0478
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "kind": "waypoint",
+        "name": "Citadel of Saladin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.2599,
+          30.0287
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "kind": "route",
+        "name": "Giza to Citadel",
+        "distance_m": 15637.09,
+        "times": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "elevations": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "point_name": [
+          "Great Pyramid of Giza",
+          "Cairo Tower",
+          "Tahrir Square",
+          "Citadel of Saladin"
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            31.1342,
+            29.9792
+          ],
+          [
+            31.2243,
+            30.0459
+          ],
+          [
+            31.2336,
+            30.0478
+          ],
+          [
+            31.2599,
+            30.0287
+          ]
+        ]
+      }
+    }
+  ]
+}
