@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Giza to the Citadel: gpx-to-geojson showcase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  header { padding: 8px 12px; }
+  h1 { font-size: 1.2rem; margin: 0 0 4px; }
+  p { margin: 2px 0; font-size: .9rem; }
+  #map { height: calc(100vh - 110px); }
+</style>
+</head>
+<body>
+<header>
+  <h1>How long is the route from the Giza pyramids to the Citadel of Saladin?</h1>
+  <p>A GPX route through four Cairo landmarks, converted to GeoJSON; lengths are geodesic (WGS84 ellipsoid), in metres.</p>
+  <p>Click a leg or a landmark for its properties. <a href="https://github.com/AmmarYasser455/gpx-to-geojson">Source on GitHub</a></p>
+</header>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  var map = L.map('map');
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+  fetch('map.geojson').then(function (r) { return r.json(); }).then(function (data) {
+    var layer = L.geoJSON(data, {
+      style: function (f) {
+        return f.properties.kind === 'leg' ? { color: '#c2410c', weight: 4 } : { color: '#1d4ed8', weight: 2, dashArray: '4 6' };
+      },
+      pointToLayer: function (f, ll) { return L.circleMarker(ll, { radius: 7, color: '#1d4ed8', fillOpacity: 0.9 }); },
+      onEachFeature: function (f, l) {
+        var rows = Object.keys(f.properties).filter(function (k) {
+          return typeof f.properties[k] !== 'object' || f.properties[k] === null;
+        }).map(function (k) { return '<b>' + esc(k) + '</b>: ' + esc(f.properties[k]); });
+        l.bindPopup(rows.join('<br>'));
+      }
+    }).addTo(map);
+    map.fitBounds(layer.getBounds());
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="gpx-to-geojson examples" xmlns="http://www.topografix.com/GPX/1/1">
+  <wpt lat="29.9792" lon="31.1342"><name>Great Pyramid of Giza</name></wpt>
+  <wpt lat="30.0459" lon="31.2243"><name>Cairo Tower</name></wpt>
+  <wpt lat="30.0478" lon="31.2336"><name>Tahrir Square</name></wpt>
+  <wpt lat="30.0287" lon="31.2599"><name>Citadel of Saladin</name></wpt>
+  <rte>
+    <name>Giza to Citadel</name>
+    <rtept lat="29.9792" lon="31.1342"><name>Great Pyramid of Giza</name></rtept>
+    <rtept lat="30.0459" lon="31.2243"><name>Cairo Tower</name></rtept>
+    <rtept lat="30.0478" lon="31.2336"><name>Tahrir Square</name></rtept>
+    <rtept lat="30.0287" lon="31.2599"><name>Citadel of Saladin</name></rtept>
+  </rte>
+</gpx>

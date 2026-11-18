@@ -10,6 +10,13 @@ This tool converts one to the other and adds the numbers people usually want nex
 geodesic length, start/end time, duration and elevation range. Lengths are computed on the
 WGS84 ellipsoid with `pyproj.Geod` (not planar maths on degrees); geometries are built with `shapely`.
 
+## Showcase
+
+How long is a route from the Giza pyramids to the Citadel of Saladin, leg by leg?
+[Report](showcase/README.md) · [web map](showcase/index.html) · [notebook](showcase/showcase.ipynb) · [GeoJSON](showcase/map.geojson)
+
+![map](showcase/map.png)
+
 ## Install
 
 ```
