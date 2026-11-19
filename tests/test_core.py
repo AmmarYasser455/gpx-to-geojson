@@ -258,6 +258,42 @@ def test_not_gpx_and_empty():
     assert parse_gpx(gpx(""))["features"] == []
 
 
+@pytest.mark.parametrize(
+    "stamp, expected",
+    [
+        ("2024-05-01T10:00:00.5Z", "2024-05-01T10:00:00.500000Z"),
+        ("2024-05-01T10:00:00.12Z", "2024-05-01T10:00:00.120000Z"),
+        ("2024-05-01T10:00:00.1234567Z", "2024-05-01T10:00:00.123456Z"),
+        ("2024-05-01T10:00:00,25Z", "2024-05-01T10:00:00.250000Z"),
+        ("2024-05-01T12:00:00.5+02:00", "2024-05-01T10:00:00.500000Z"),
+        ("  2024-05-01T10:00:00Z ", "2024-05-01T10:00:00Z"),
+    ],
+)
+def test_fractional_second_timestamps_parse_on_any_python(stamp, expected):
+    from gpx_to_geojson.core import _iso, _parse_time
+
+    assert _iso(_parse_time(stamp)) == expected
+
+
+@pytest.mark.parametrize(
+    "stamp, expected",
+    [
+        ("2024-05-01T10:00:00.5Z", "2024-05-01T10:00:00.500000Z"),
+        ("2024-05-01T10:00:00.12Z", "2024-05-01T10:00:00.120000Z"),
+        ("2024-05-01T10:00:00.1234567Z", "2024-05-01T10:00:00.123456Z"),
+        ("2024-05-01T10:00:00,25Z", "2024-05-01T10:00:00.250000Z"),
+        ("2024-05-01T10:00:00.5+02:00", "2024-05-01T10:00:00.500000+02:00"),
+        ("2024-05-01T10:00:00Z", "2024-05-01T10:00:00Z"),
+        ("2024-05-01", "2024-05-01"),
+    ],
+)
+def test_normalize_fraction_gives_six_digits(stamp, expected):
+    """Checked directly so the Python 3.10 failure mode is covered on any runtime."""
+    from gpx_to_geojson.core import _normalize_fraction
+
+    assert _normalize_fraction(stamp) == expected
+
+
 def test_cli_roundtrip_and_errors(tmp_path, capsys):
     src = tmp_path / "a.gpx"
     src.write_text(TRACK, encoding="utf-8")
