@@ -40,11 +40,20 @@ def _iso(dt):
     return dt.isoformat().replace("+00:00", "Z") if dt else None
 
 
+_FRACTION = re.compile(r"(?<=:\d\d)[.,](\d+)")
+
+
+def _normalize_fraction(value):
+    """Fractional seconds as exactly six digits: ``datetime.fromisoformat`` on
+    Python < 3.11 accepts only 3 or 6 digits (and no comma separator)."""
+    return _FRACTION.sub(lambda m: "." + m.group(1)[:6].ljust(6, "0"), value, count=1)
+
+
 def _parse_time(value):
     if not value:
         return None
     try:
-        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(_normalize_fraction(value.strip()).replace("Z", "+00:00"))
         if dt.tzinfo is None:  # GPX times are UTC by specification
             dt = dt.replace(tzinfo=timezone.utc)
         return dt.astimezone(timezone.utc)
