@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="assets/brand/logo.png" alt="gpx-to-geojson logo" width="112">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/logo-dark.png">
+    <img src="assets/brand/logo.png" alt="gpx-to-geojson logo" width="112">
+  </picture>
 </p>
 
 # gpx-to-geojson
