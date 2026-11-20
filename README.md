@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/brand/logo.png" alt="gpx-to-geojson logo" width="112">
+</p>
+
 # gpx-to-geojson
 
 Convert GPX tracks, routes and waypoints to GeoJSON with timestamps, elevation and per-track distance and duration.
