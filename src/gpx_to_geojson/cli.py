@@ -2,7 +2,7 @@ import argparse
 import json
 import sys
 
-from .core import convert
+from .core import convert, parse_gpx
 
 
 def main(argv=None) -> int:
@@ -10,12 +10,15 @@ def main(argv=None) -> int:
         prog="gpx-to-geojson",
         description="Convert GPX tracks, routes and waypoints to GeoJSON (WGS84, lon/lat order).",
     )
-    ap.add_argument("gpx", help="input GPX file")
+    ap.add_argument("gpx", help="input GPX file, or - to read GPX from standard input")
     ap.add_argument("-o", "--output", help="output GeoJSON file (default: stdout)")
     ap.add_argument("--indent", type=int, default=2, help="JSON indent (default 2)")
     args = ap.parse_args(argv)
     try:
-        fc = convert(args.gpx)
+        if args.gpx == "-":
+            fc = parse_gpx(sys.stdin.buffer.read())
+        else:
+            fc = convert(args.gpx)
     except (OSError, ValueError, SyntaxError) as exc:  # ET.ParseError is a SyntaxError
         print(f"error: {exc}", file=sys.stderr)
         return 1

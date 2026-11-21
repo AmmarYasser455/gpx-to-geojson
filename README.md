@@ -39,6 +39,7 @@ Requires Python >= 3.10 (dependencies: `pyproj`, `shapely`).
 ```
 gpx-to-geojson examples/cairo.gpx -o cairo.geojson     # or: python -m gpx_to_geojson ...
 gpx-to-geojson examples/cairo.gpx                      # prints GeoJSON to stdout
+cat examples/cairo.gpx | gpx-to-geojson -              # reads GPX from stdin
 ```
 
 Output for the route in `examples/cairo.gpx` (four real Cairo landmarks):

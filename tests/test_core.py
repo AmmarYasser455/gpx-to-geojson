@@ -294,6 +294,25 @@ def test_normalize_fraction_gives_six_digits(stamp, expected):
     assert _normalize_fraction(stamp) == expected
 
 
+def test_cli_reads_stdin(monkeypatch, capsys):
+    import io
+    import sys
+
+    data = gpx('<wpt lat="30.0459" lon="31.2243"><name>Cairo Tower</name></wpt>').encode()
+
+    class _In:
+        buffer = io.BytesIO(data)
+
+    monkeypatch.setattr(sys, "stdin", _In)
+    assert main(["-"]) == 0
+    feat = json.loads(capsys.readouterr().out)["features"][0]
+    assert feat["geometry"]["coordinates"] == [31.2243, 30.0459]
+    assert feat["properties"]["name"] == "Cairo Tower"
+
+    _In.buffer = io.BytesIO(b"")
+    assert main(["-"]) == 1
+
+
 def test_cli_roundtrip_and_errors(tmp_path, capsys):
     src = tmp_path / "a.gpx"
     src.write_text(TRACK, encoding="utf-8")
