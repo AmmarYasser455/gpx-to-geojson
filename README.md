@@ -9,6 +9,8 @@
 
 Convert GPX tracks, routes and waypoints to GeoJSON with timestamps, elevation and per-track distance and duration.
 
+Part of [OpenTerra](https://github.com/AmmarYasser455), a family of open GIS tools.
+
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AmmarYasser455/gpx-to-geojson/blob/main/examples/demo.ipynb)
 · [Demo map](https://ammaryasser455.github.io/gpx-to-geojson/)
 
