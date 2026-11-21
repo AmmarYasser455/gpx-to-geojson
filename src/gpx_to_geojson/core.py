@@ -14,6 +14,7 @@ import re
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
+from xml.parsers import expat
 
 from pyproj import CRS
 from shapely.geometry import LineString, MultiLineString, Point, mapping
@@ -196,6 +197,22 @@ def _feature(geom, props):
     return {"type": "Feature", "properties": props, "geometry": mapping(geom)}
 
 
+def _refuse_entity(*_args):
+    raise ValueError("GPX with XML entity declarations is not supported")
+
+
+def _fromstring(source):
+    """Parse XML, refusing entity declarations (GPX never needs them; they allow
+    entity-expansion blow-ups such as the "billion laughs" attack)."""
+    scan = expat.ParserCreate()
+    scan.EntityDeclHandler = _refuse_entity
+    try:
+        scan.Parse(source, True)
+    except expat.ExpatError:
+        pass  # malformed XML: ElementTree below reports it as ParseError
+    return ET.fromstring(source)
+
+
 def parse_gpx(source: str) -> dict:
     """Convert GPX XML text to a GeoJSON FeatureCollection (dict).
 
@@ -217,7 +234,7 @@ def parse_gpx(source: str) -> dict:
         raise TypeError(f"GPX source must be str or bytes, not {type(source).__name__}")
     if not source.strip():
         raise ValueError("empty GPX input")
-    root = ET.fromstring(source)
+    root = _fromstring(source)
     if _local(root.tag) != "gpx":
         raise ValueError("not a GPX document (root element is not <gpx>)")
     features = []

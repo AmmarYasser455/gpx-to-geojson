@@ -306,3 +306,19 @@ def test_cli_roundtrip_and_errors(tmp_path, capsys):
     assert main([str(bad)]) == 1
     assert main([str(src), "-o", str(tmp_path / "no-such-dir" / "x.geojson")]) == 1
     assert "error" in capsys.readouterr().err
+
+
+def test_entity_declarations_are_rejected():
+    bomb = (
+        '<?xml version="1.0"?><!DOCTYPE gpx [<!ENTITY a "aaaaaaaaaa"><!ENTITY b "&a;&a;&a;">]>'
+        '<gpx version="1.1"><wpt lat="30.0" lon="31.0"><name>&b;</name></wpt></gpx>'
+    )
+    with pytest.raises(ValueError, match="entity"):
+        parse_gpx(bomb)
+    with pytest.raises(ValueError, match="entity"):
+        parse_gpx(bomb.encode("utf-8"))
+
+
+def test_plain_doctype_without_entities_still_parses():
+    doc = '<?xml version="1.0"?><!DOCTYPE gpx><gpx version="1.1"><wpt lat="30.0" lon="31.0"/></gpx>'
+    assert parse_gpx(doc)["features"][0]["geometry"]["coordinates"] == [31.0, 30.0]

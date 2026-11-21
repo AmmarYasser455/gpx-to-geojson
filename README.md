@@ -121,6 +121,8 @@ and downloads the example GPX when run in a fresh runtime such as Colab); the de
 * Unparseable timestamps are treated as missing; timestamps without a zone are taken as UTC.
 * Elevation is reported as recorded, in properties only (no geoid correction or smoothing) and distance is 2D (elevation is not included).
 * No simplification or GPS-noise filtering; stopped time is included in `duration_s`.
+* GPX files that declare XML entities (`<!ENTITY ...>`) are rejected with a `ValueError`, to rule out
+  entity-expansion attacks; real GPX never uses them.
 * Input is XML in the encoding named by its declaration (UTF-8 by default). `parse_gpx` accepts only
   non-empty `str`/`bytes` and `convert` only `str`/`os.PathLike` paths; other types raise `TypeError`.
 
